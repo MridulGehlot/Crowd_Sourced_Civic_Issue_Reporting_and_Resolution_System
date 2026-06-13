@@ -1,0 +1,2 @@
+npm install express mongoose dotenv cors helmet morgan bcryptjs jsonwebtoken cookie-parser
+npm install -D nodemon
