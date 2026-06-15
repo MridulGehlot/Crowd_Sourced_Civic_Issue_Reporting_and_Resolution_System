@@ -3,6 +3,9 @@ const cors=require("cors");
 const helmet=require("helmet");
 const morgan=require("morgan");
 const cookieParser=require("cookie-parser");
+const errorMiddleware=require("./middleware/errorMiddleware");
+const ApiError=require("./utils/ApiError");
+const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 
@@ -28,8 +31,21 @@ app.use(cookieParser());
 // Parse JSON
 app.use(express.json());
 
+
+app.use("/api/auth", authRoutes);
+
+
 app.get("/", (req, res) => {
     res.send("API is running...");
 });
+app.get("/health", (req, res) => {
+    res.status(200).json({message : "Working"});    
+});
+
+app.get("/error",(req,res)=>{
+    throw new ApiError(404,"Not Found");
+})
+
+app.use(errorMiddleware);
 
 module.exports = app;
