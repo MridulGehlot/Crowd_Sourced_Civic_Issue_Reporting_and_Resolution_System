@@ -2,12 +2,17 @@ const mongoose = require("mongoose");
 const departmentSchema = new mongoose.Schema({
     name:{
         type:String,
+        required:true,
+        unique:true,
+        trim:true
     },
     description:{
         type:String,
+        trim:true
     },
     category:{
-        type:String
+        type:String,
+        required: true
     },
     isActive:{
         type:Boolean,
@@ -18,3 +23,5 @@ const departmentSchema = new mongoose.Schema({
     timestamps:true
 }
 );
+
+module.exports = mongoose.model("Department",departmentSchema);

@@ -29,8 +29,8 @@ const userSchema=new mongoose.Schema({
         default:ROLES.CITIZEN
     },
     department:{
-        type:String,
-        enum:Object.values(DEPARTMENTS)
+        type:mongoose.Schema.Types.ObjectId,
+        ref: "Department"
     },
     isActive:{
         type:Boolean,

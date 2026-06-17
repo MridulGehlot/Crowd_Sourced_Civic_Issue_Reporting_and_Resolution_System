@@ -10,9 +10,9 @@ const issueRoutes = require("./routes/issue.routes");
 const authMiddleware = require("./middleware/auth.middleware");
 const authorize = require("./middleware/authorize.middleware");
 const ROLES = require("./constants/roles");
-
+const departmentRoutes = require("./routes/department.routes");
 const app = express();
-
+const adminRoutes = require("./routes/admin.routes");
 //security middleware
 app.use(helmet());
 
@@ -38,6 +38,10 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/issues", issueRoutes);
+app.use("/api/departments",departmentRoutes);
+
+//admin routes
+app.use("/api/admin/authorities",adminRoutes);
 
 app.get("/api/admin-test",authMiddleware,authorize(ROLES.ADMIN),(req,res)=>{
     res.json({
