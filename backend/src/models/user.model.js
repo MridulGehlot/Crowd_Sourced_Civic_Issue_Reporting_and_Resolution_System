@@ -1,6 +1,8 @@
 const mongoose=require('mongoose');
 const bcrypt=require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const ROLES = require("../constants/roles");
+const DEPARTMENTS = require("../constants/departments");
 const userSchema=new mongoose.Schema({
     name:{
         type:String,
@@ -23,11 +25,12 @@ const userSchema=new mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["citizen","admin","authority"],
-        default:"citizen"
+        enum:Object.values(ROLES),
+        default:ROLES.CITIZEN
     },
     department:{
-        type:String
+        type:String,
+        enum:Object.values(DEPARTMENTS)
     },
     isActive:{
         type:Boolean,

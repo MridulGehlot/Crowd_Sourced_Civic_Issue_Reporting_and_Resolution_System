@@ -1,5 +1,7 @@
 const mongoose =require("mongoose");
 const User = require("../models/user.model");
+const ISSUE_CATEGORIES = require("../constants/issueCategories");
+const ISSUE_STATUS = require("../constants/issueStatus");
 const issueSchema = new mongoose.Schema({
     title:{
         type:String,
@@ -14,9 +16,7 @@ const issueSchema = new mongoose.Schema({
     category:{
         type:String,
         required:true,
-        enum:[
-            "road","water","electricity","garbage","sewage","street_light","other"
-        ]
+        enum:Object.values(ISSUE_CATEGORIES)
     },
     address:{
         type:String,
@@ -33,10 +33,8 @@ const issueSchema = new mongoose.Schema({
     },
     status:{
         type: String,
-        enum: [
-            "pending","assigned","in_progess","resolved","rejected"
-        ],
-        default:"pending"
+        enum: Object.values(ISSUE_STATUS),
+        default:ISSUE_STATUS.PENDING
     },
     assignedTo:{
         type:mongoose.Schema.Types.ObjectId,
