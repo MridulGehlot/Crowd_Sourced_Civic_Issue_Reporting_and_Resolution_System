@@ -6,7 +6,10 @@ const cookieParser=require("cookie-parser");
 const errorMiddleware=require("./middleware/errorMiddleware");
 const ApiError=require("./utils/ApiError");
 const authRoutes = require("./routes/auth.routes");
-const issueRoutes = require("./routes/issue.routes")
+const issueRoutes = require("./routes/issue.routes");
+const authMiddleware = require("./middleware/auth.middleware");
+const authorize = require("./middleware/authorize.middleware");
+const ROLES = require("./constants/roles");
 
 const app = express();
 
@@ -35,6 +38,12 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/issues", issueRoutes);
+
+app.get("/api/admin-test",authMiddleware,authorize(ROLES.ADMIN),(req,res)=>{
+    res.json({
+        message: "Hello Admin"
+    });
+});
 
 app.get("/", (req, res) => {
     res.send("API is running...");
