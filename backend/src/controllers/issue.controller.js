@@ -28,7 +28,7 @@ const createIssue=asyncHandler(async(req,res)=>{
         status: assignedAuthority?ISSUE_STATUS.ASSIGNED:ISSUE_STATUS.PENDING
     });
     const createdIssue = await Issue.findById(issue._id)
-    .populate(assignedTo,"name email phone");
+    .populate("assignedTo","name email phone");
     return res.status(200).json(new ApiResponse(201,"Issue reported successfully",issue));
 });
 
@@ -83,4 +83,14 @@ const updateStatus = asyncHandler(async (req,res)=>{
     return res.status(200).json(new ApiResponse(200,"Issue Status Updated Successfully",issue));
 });
 
-module.exports = {createIssue,getAllIssues,getMyIssues,getAssignedIssues,updateStatus};
+const getIssueById = asyncHandler(async (req,res)=>{
+    const {id} = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) throw new ApiError(400,"Invalid Issue id");
+    const issue = await Issue.findById(id)
+    .populate("reportedBy","name email phone")
+    .populate("assignedTo","name email phone");
+    if(!issue) throw new ApiError(404,"Issue Not Found");
+    return res.status(200).ApiResponse(200,"Issue Details",issue);
+});
+
+module.exports = {createIssue,getAllIssues,getMyIssues,getAssignedIssues,updateStatus,getIssueById};
