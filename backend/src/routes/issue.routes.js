@@ -10,6 +10,6 @@ router.post("/",authMiddleware,createIssue);
 router.get("/",authMiddleware,getAllIssues);
 router.get("/my",authMiddleware,getMyIssues);
 router.get("/assigned",authMiddleware,authorize(ROLES.AUTHORITY),getAssignedIssues);
-router.patch("/:id/status",authMiddleware,authorize(ROLES.AUTHORITY),updateStatus);
+router.patch("/:id/status",authMiddleware,authorize(ROLES.AUTHORITY,ROLES.ADMIN),updateStatus);
 
 module.exports = router;
