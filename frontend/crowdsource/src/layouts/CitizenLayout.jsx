@@ -1,4 +1,5 @@
 import Sidebar from "../components/common/Sidebar";
+import Topbar from "../components/common/Topbar";
 
 function CitizenLayout({children}){
     return (
@@ -6,6 +7,7 @@ function CitizenLayout({children}){
         <div className="flex min-h-screen">
             <Sidebar/>
             <main className="flex-1 bg-gray-100 p-8">
+                <Topbar />
                 {children}
             </main>
         </div>
