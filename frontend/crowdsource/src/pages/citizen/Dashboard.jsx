@@ -3,9 +3,11 @@ import StatCard from "../../components/dashboard/StatCard";
 import { useEffect } from "react";
 import { getMyIssues } from "../../api/issueApi";
 import useIssueStore from "../../store/issueStore";
+import Loader from "../../components/common/Loader";
 
 function CitizenDashboard() {
 
+    const [loading,setLoading] = useState(true);
     const issues = useIssueStore((state)=>state.issues);
     const setIssues = useIssueStore((state)=>state.setIssues);
     useEffect(()=>{
@@ -18,6 +20,9 @@ function CitizenDashboard() {
             }catch(err){
                 console.log(err);
             }
+            finally{
+                setLoading(false);
+            }
         }
         fetchIssues();
     },[]);
@@ -26,6 +31,18 @@ function CitizenDashboard() {
     const pendingIssues = issues.filter(issues=>issues.status==="pending").length;
     const progressIssues = issues.filter(issues=>issues.status==="in_progress").length;
     const resolvedIssues = issues.filter(issues=>issues.status==="resolved").length;
+    const assignedIssues = issues.filter(issues=>issues.status==="assigned").length;
+
+    if(loading)
+    {
+        return (
+            <>
+            <CitizenLayout>
+                <Loader></Loader>
+            </CitizenLayout>
+            </>
+        );
+    }
 
     return (
 
@@ -61,6 +78,12 @@ function CitizenDashboard() {
                     title="Resolved"
                     value={resolvedIssues}
                     bgClass="bg-green-600"
+                />
+
+                <StatCard 
+                title="Assigned"
+                value={assignedIssues}
+                bgClass="bg-blue-600"
                 />
 
             </div>
