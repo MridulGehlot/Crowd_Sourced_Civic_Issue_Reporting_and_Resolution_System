@@ -20,7 +20,10 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 //CORS Middleware
-app.use(cors());
+app.use(cors({
+origin:"http://localhost:5173",
+credentials:true
+}));
 
 //parse url encoded data
 app.use(express.urlencoded(
