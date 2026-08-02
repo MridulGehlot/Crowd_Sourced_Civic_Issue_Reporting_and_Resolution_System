@@ -6,6 +6,8 @@ import CitizenDashboard from "../pages/citizen/Dashboard";
 import AdminDashboard from "../pages/admin/Dashboard";
 import AuthorityDashboard from "../pages/authority/Dashboard";
 import ProtectedRoute from "../components/common/ProtectedRoute";
+import CreateIssue from "../pages/citizen/CreateIssue";
+import MyIssues from "../pages/citizen/MyIssues";
 
 function AppRoutes(){
     return (
@@ -33,6 +35,19 @@ function AppRoutes(){
                 <AuthorityDashboard/>
                 </ProtectedRoute>
                 }></Route>
+
+            <Route path="/citizen/create-issue" element={
+                <ProtectedRoute allowedRoles={["citizen"]}>
+                    <CreateIssue></CreateIssue>
+                </ProtectedRoute>
+                }/>
+
+            <Route path="/citizen/my-issues" element={
+                <ProtectedRoute allowedRoles={["citizen"]}>
+                    <MyIssues />
+                </ProtectedRoute>
+                }/>
+
         </Routes>
         </BrowserRouter>
         </>

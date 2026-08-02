@@ -10,6 +10,11 @@ export const getAllIssues = async ()=>{
     return response.data;
 }
 
+export const createIssue = async (data)=>{
+    const response = await api.post("/issues",data);
+    return response.data;
+}
+
 /*
 createIssue()
 deleteIssue()
