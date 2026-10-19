@@ -1,10 +1,8 @@
-import {create} from "zustand";
+import { create } from "zustand";
 
-const useIssueStore = create((status)=>({
-    issues : [],
-    setIssues : function(issues){
-        set({issues});
-    }
+const useIssueStore = create((set) => ({
+    issues: [],
+    setIssues: (issues) => set({ issues })
 }));
 
 export default useIssueStore;

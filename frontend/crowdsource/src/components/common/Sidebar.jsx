@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 function Sidebar(){
     return (
         <>
-         <div className="w-64 bg-blue-700 text-white p-6">
+         <div className="w-64 bg-stone-950 text-stone-100 p-6">
             <h1 className="text-2xl font-bold mb-8">
                 Civic Portal
             </h1>

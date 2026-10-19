@@ -16,7 +16,7 @@ const departmentSchema = new mongoose.Schema({
     },
     isActive:{
         type:Boolean,
-        defalut:true
+        default:true
     }
 },
 {

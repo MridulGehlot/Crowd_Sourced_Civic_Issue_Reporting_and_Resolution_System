@@ -5,30 +5,22 @@ const ApiError = require("../utils/ApiError");
 const ISSUE_STATUS = require("../constants/issueStatus");
 
 
-//This Function has N+1 Query Problem
 const findLeastBusyAuthority = async (departmentId) => {
     const authorities = await User.find({
         role:ROLES.AUTHORITY,
-        department:departmentId
+        department:departmentId,
+        isActive:true
     });
     if(!authorities.length) return null;
-    let selectedAuhority=null;
-    let minimumWorkload=Infinity;
-    for(const authority of authorities)
-    {
-        const activeIssues = await Issue.countDocuments({
-            assignedTo:authority._id,
-            status:{
-                $in: [ISSUE_STATUS.ASSIGNED,ISSUE_STATUS.IN_PROGRESS]
-            }
-        });
-        if(activeIssues<minimumWorkload)
-        {
-            minimumWorkload=activeIssues;
-            selectedAuhority=authority;
-        }
-    }
-    return selectedAuhority;
+    const workloads = await Issue.aggregate([
+        { $match: { assignedTo: { $in: authorities.map((authority) => authority._id) }, status: { $in: [ISSUE_STATUS.ASSIGNED, ISSUE_STATUS.IN_PROGRESS] } } },
+        { $group: { _id: "$assignedTo", activeIssues: { $sum: 1 } } }
+    ]);
+    const workloadByAuthority = new Map(workloads.map((item) => [item._id.toString(), item.activeIssues]));
+    return authorities.reduce((selected, authority) => {
+        if (!selected) return authority;
+        return (workloadByAuthority.get(authority._id.toString()) || 0) < (workloadByAuthority.get(selected._id.toString()) || 0) ? authority : selected;
+    }, null);
 }
 
 module.exports = findLeastBusyAuthority;

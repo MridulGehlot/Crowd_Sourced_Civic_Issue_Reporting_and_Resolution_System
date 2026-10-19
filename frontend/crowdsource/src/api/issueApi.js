@@ -5,8 +5,8 @@ export const getMyIssues = async()=>{
     return response.data;
 }
 
-export const getAllIssues = async ()=>{
-    const response = await api.get("/issues");
+export const getAllIssues = async (params = {})=>{
+    const response = await api.get("/issues", { params });
     return response.data;
 }
 
@@ -15,9 +15,17 @@ export const createIssue = async (data)=>{
     return response.data;
 }
 
-/*
-createIssue()
-deleteIssue()
-updateIssue()
-getIssueById()
-*/
+export const getIssueById = async (id)=>{
+    const response = await api.get(`/issues/${id}`);
+    return response.data;
+};
+
+export const getAssignedIssues = async (params = {})=>{
+    const response = await api.get("/issues/assigned", { params });
+    return response.data;
+};
+
+export const updateIssueStatus = async (id, data)=>{
+    const response = await api.patch(`/issues/${id}/status`, data);
+    return response.data;
+};

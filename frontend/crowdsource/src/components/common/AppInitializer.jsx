@@ -7,6 +7,7 @@ function AppInitializer({ children }) {
     const setUser = useAuthStore(
         (state) => state.setUser
     );
+    const clearUser = useAuthStore((state) => state.clearUser);
 
     const [loading, setLoading] = useState(true);
 
@@ -23,7 +24,7 @@ function AppInitializer({ children }) {
 
             }
             catch {
-
+                clearUser();
             }
             finally {
 
@@ -35,7 +36,7 @@ function AppInitializer({ children }) {
 
         initialize();
 
-    }, []);
+    }, [clearUser, setUser]);
 
     if (loading)
         return <h1>Loading...</h1>;

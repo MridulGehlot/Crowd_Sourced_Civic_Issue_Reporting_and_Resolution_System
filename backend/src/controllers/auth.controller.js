@@ -3,6 +3,13 @@ const ApiError=require("../utils/ApiError");
 const ApiResponse=require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 
+const getCookieOptions = () => ({
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.COOKIE_SAME_SITE || (process.env.NODE_ENV === "production" ? "none" : "lax"),
+    maxAge: 7 * 24 * 60 * 60 * 1000
+});
+
 const register = asyncHandler(async (req, res) => {
 
     const {name,email,password,phone} = req.body;
@@ -24,16 +31,13 @@ const login = asyncHandler(async (req,res)=>{
     if(!email || !password) throw new ApiError(400,"Email and Password are Required");
     const user = await User.findOne({email});
     if(!user) throw new ApiError(401,"Invalid Credentials");
+    if(!user.isActive) throw new ApiError(403,"Your account is inactive");
     const isPasswordCorrect = await user.comparePasswords(password);
-    if(!isPasswordCorrect) throw new ApiError(401,"Invlaid Credentials");
+    if(!isPasswordCorrect) throw new ApiError(401,"Invalid Credentials");
     const token = user.generateToken();
     const loggedInUser = await User.findById(user._id).select("-password");
     return res.status(200)
-    .cookie("token",token,{
-        httpOnly:true,
-        secure:false, //true in production
-        maxAge: 7*24*60*60*1000
-    })
+    .cookie("token",token,getCookieOptions())
     .json(new ApiResponse(200,"Login Successful",loggedInUser));
 });
 
@@ -41,4 +45,11 @@ const getMe = asyncHandler(async(req,res)=>{
     return res.json(new ApiResponse(200,"Current User",req.user));
 });
 
-module.exports = { register,login,getMe };
+const logout = asyncHandler(async(req,res)=>{
+    return res
+        .clearCookie("token", getCookieOptions())
+        .status(200)
+        .json(new ApiResponse(200,"Logout Successful"));
+});
+
+module.exports = { register,login,getMe,logout };

@@ -19,10 +19,18 @@ app.use(helmet());
 //logging middleware
 app.use(morgan("dev"));
 
-//CORS Middleware
+// CORS must remain explicit when credentialed cookies are enabled.
+const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
 app.use(cors({
-origin:"http://localhost:5173",
-credentials:true
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(new ApiError(403, "Origin is not allowed"));
+    },
+    credentials: true
 }));
 
 //parse url encoded data

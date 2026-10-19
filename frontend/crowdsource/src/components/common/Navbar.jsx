@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="bg-blue-600 text-white shadow-md">
+    <nav className="bg-stone-950 text-stone-100 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         <h1 className="text-xl font-bold">
           Civic Reporter
@@ -14,15 +14,15 @@ function Navbar() {
             Home
           </Link>
 
-          <Link to="/issues">
+          <Link className="hover:text-orange-200" to="/issues">
             Issues
           </Link>
 
-          <Link to="/login">
+          <Link className="hover:text-orange-200" to="/login">
             Login
           </Link>
 
-          <Link to="/register">
+          <Link className="hover:text-orange-200" to="/register">
             Register
           </Link>
 

@@ -8,6 +8,11 @@ import AuthorityDashboard from "../pages/authority/Dashboard";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 import CreateIssue from "../pages/citizen/CreateIssue";
 import MyIssues from "../pages/citizen/MyIssues";
+import Issues from "../pages/public/Issues";
+import IssueDetails from "../pages/public/IssueDetails";
+import AssignedIssues from "../pages/authority/ASsginedIssues";
+import Authorities from "../pages/admin/Authorities";
+import Departments from "../pages/admin/Departments";
 
 function AppRoutes(){
     return (
@@ -17,6 +22,8 @@ function AppRoutes(){
             <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<Register/>}></Route>
             <Route path="/" element={<Home/>}></Route>
+            <Route path="/issues" element={<Issues/>}></Route>
+            <Route path="/issues/:id" element={<IssueDetails/>}></Route>
             
             <Route path="/citizen/dashboard" element={
                 <ProtectedRoute allowedRoles={["citizen"]}>
@@ -29,12 +36,15 @@ function AppRoutes(){
                 <AdminDashboard/>
                 </ProtectedRoute>
                 }></Route>
+            <Route path="/admin/authorities" element={<ProtectedRoute allowedRoles={["admin"]}><Authorities /></ProtectedRoute>} />
+            <Route path="/admin/departments" element={<ProtectedRoute allowedRoles={["admin"]}><Departments /></ProtectedRoute>} />
 
             <Route path="/authority/dashboard" element={
                 <ProtectedRoute allowedRoles={["authority"]}>
                 <AuthorityDashboard/>
                 </ProtectedRoute>
                 }></Route>
+            <Route path="/authority/assigned" element={<ProtectedRoute allowedRoles={["authority"]}><AssignedIssues /></ProtectedRoute>} />
 
             <Route path="/citizen/create-issue" element={
                 <ProtectedRoute allowedRoles={["citizen"]}>

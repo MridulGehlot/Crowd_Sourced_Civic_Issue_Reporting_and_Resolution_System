@@ -1,28 +1,26 @@
 
 function StatusBadge({status}){
-let classes="";
-switch(status){
-case "pending":
-classes="bg-yellow-100 text-yellow-700";
-break;
-case "assigned":
-classes="bg-blue-100 text-blue-700";
-break;
-case "in_progress":
-classes="bg-orange-100 text-orange-700";
-break;
-case "resolved":
-classes="bg-green-100 text-green-700";
-break;
-default:
-classes="bg-gray-100";
-}
+const classes = {
+	pending: "bg-amber-100 text-amber-800",
+	assigned: "bg-stone-200 text-stone-700",
+	in_progress: "bg-orange-100 text-orange-800",
+	resolved: "bg-green-100 text-green-800",
+	rejected: "bg-red-100 text-red-700"
+}[status] || "bg-gray-100 text-gray-700";
+
+const labels = {
+	pending: "Pending",
+	assigned: "Assigned",
+	in_progress: "In Progress",
+	resolved: "Resolved",
+	rejected: "Rejected"
+};
 
 return(
 <span
 className={`px-3 py-1 rounded-full text-sm ${classes}`}
 >
-{status}
+{labels[status] || status}
 </span>
 )
 

@@ -1,6 +1,11 @@
 import Navbar from "../../components/common/Navbar";
+import { Link } from "react-router-dom";
+import useAuthStore from "../../store/authStore";
 
 function Home(){
+  const user = useAuthStore((state) => state.user);
+  const reportPath = user?.role === "citizen" ? "/citizen/create-issue" : "/login";
+
     return (
         <>
         <div>
@@ -22,17 +27,17 @@ function Home(){
 
         <div className="flex gap-4">
 
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-lg">
+          <Link to={reportPath} className="rounded-lg bg-terracotta-700 px-6 py-3 text-white hover:bg-terracotta-500">
 
             Report Issue
 
-          </button>
+          </Link>
 
-          <button className="border px-6 py-3 rounded-lg">
+          <Link to="/issues" className="rounded-lg border border-stone-300 px-6 py-3 hover:bg-white">
 
             View Issues
 
-          </button>
+          </Link>
 
         </div>
 
